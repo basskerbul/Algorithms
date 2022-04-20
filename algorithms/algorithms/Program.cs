@@ -17,6 +17,27 @@ item3.Value = 21;
 item3.NextNode = null;
 item3.PrevNode = item2;
 
+LinkedList ll = new LinkedList(item3);
+
+int counter = ll.GetCount();
+Console.WriteLine(counter); 
+
+ll.AddNode(88);
+counter = ll.GetCount();
+Console.WriteLine(counter); 
+
+ll.RemoveNode(item1);
+counter = ll.GetCount();
+Console.WriteLine(counter); 
+
+ll.AddNodeAfter(item2, 336);
+counter = ll.GetCount();
+Console.WriteLine(counter); 
+
+ll.RemoveNode(4);
+counter = ll.GetCount();
+Console.WriteLine(counter); 
+
 //Начальную и конечную ноду нужно хранить в самой реализации интерфейса
 public interface ILinkedList
 {
@@ -65,11 +86,52 @@ public class LinkedList: ILinkedList
 {
     public Node? head;
     public Node? tail;
-    int counter;
+
+    //Находит первую и последнюю ноду
+    public LinkedList(Node node)
+    {
+        var currentNode = node;
+        while (true)
+        {
+            if (currentNode.NextNode == null)
+            {
+                tail = currentNode;
+                break;
+            }
+            currentNode = currentNode.NextNode;
+        }
+        while (true)
+        {
+            if(currentNode.PrevNode == null)
+            {
+                head = currentNode;
+                break;
+            }
+            currentNode = currentNode.PrevNode;
+        }
+    }
 
     public int GetCount()
     {
-        return 0;
+        if (head == null)
+            return 0;
+        else
+        {
+            int counter = 1;
+            Node currentNode = head;
+            while (true)
+            {
+                if (currentNode.NextNode != null)
+                {
+                    counter++;
+                    currentNode = currentNode.NextNode;
+
+                }
+                else if(currentNode.NextNode == null)
+                    return counter;
+
+            }
+        }
     }
     public void AddNode(int value)
     {
@@ -83,7 +145,6 @@ public class LinkedList: ILinkedList
             node.PrevNode = tail;
         }
         tail = node;
-        counter++;
     }
     public void AddNodeAfter(Node node, int value)
     {
@@ -95,14 +156,67 @@ public class LinkedList: ILinkedList
     }
     public void RemoveNode(int index)
     {
-
+        //Ведь список начинается с 1. Так ведь?..
+        if(index == 0)
+            return;
+        int counter = 1;
+        Node currentNode = head;
+        while (true)
+          {
+            if (counter == index)
+            {
+                if (currentNode.PrevNode != null & currentNode.NextNode != null)
+                {
+                    //Простите, выглядит странно
+                    Node? NextNode = currentNode.NextNode;
+                    Node? PrevNode = currentNode.PrevNode;
+                    NextNode.NextNode = PrevNode;
+                    PrevNode.PrevNode = NextNode;
+                    break;
+                }
+                else if (currentNode.PrevNode == null)
+                {
+                    head = currentNode.NextNode;
+                    break;
+                }
+                else if (currentNode.NextNode == null)
+                {
+                    tail = currentNode.PrevNode;
+                    break;
+                }
+            }
+            currentNode = currentNode.NextNode;
+            counter++;
+        }
     }
     public void RemoveNode(Node node)
     {
-
+        if(node.PrevNode != null & node.NextNode != null)
+        {
+            //Простите, выглядит странно
+            Node? NextNode = node.NextNode;
+            Node? PrevNode = node.PrevNode;
+            NextNode.NextNode = PrevNode;
+            PrevNode.PrevNode = NextNode;
+        }
+        else if (node.PrevNode == null)
+        {
+            head = node.NextNode;
+        }
+        else if (node.NextNode == null)
+        {
+            tail = node.PrevNode;
+        }
     }
     public Node FindNode(int Value)
     {
+        Node currentNode = head;
+        while (currentNode != null)
+        {
+            if(currentNode.Value == Value)
+                return currentNode;
+            currentNode = currentNode.NextNode;
+        }
         return null;
     }
 }
