@@ -82,7 +82,7 @@ public class Node
     public Node PrevNode { get; set; }
 }
 
-public class LinkedList: ILinkedList
+public class LinkedList : ILinkedList
 {
     public Node? head;
     public Node? tail;
@@ -102,7 +102,7 @@ public class LinkedList: ILinkedList
         }
         while (true)
         {
-            if(currentNode.PrevNode == null)
+            if (currentNode.PrevNode == null)
             {
                 head = currentNode;
                 break;
@@ -127,7 +127,7 @@ public class LinkedList: ILinkedList
                     currentNode = currentNode.NextNode;
 
                 }
-                else if(currentNode.NextNode == null)
+                else if (currentNode.NextNode == null)
                     return counter;
 
             }
@@ -157,12 +157,17 @@ public class LinkedList: ILinkedList
     public void RemoveNode(int index)
     {
         //Ведь список начинается с 1. Так ведь?..
-        if(index == 0)
+        if (index == 0)
             return;
         int counter = 1;
         Node currentNode = head;
         while (true)
-          {
+        {
+
+            if (currentNode.NextNode == null & counter > index)
+            {
+                return;
+            }
             if (counter == index)
             {
                 if (currentNode.PrevNode != null & currentNode.NextNode != null)
@@ -185,15 +190,15 @@ public class LinkedList: ILinkedList
                     break;
                 }
             }
+
             currentNode = currentNode.NextNode;
             counter++;
         }
-    }
+}
     public void RemoveNode(Node node)
     {
         if(node.PrevNode != null & node.NextNode != null)
         {
-            //Простите, выглядит странно
             Node? NextNode = node.NextNode;
             Node? PrevNode = node.PrevNode;
             NextNode.NextNode = PrevNode;
