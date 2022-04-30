@@ -1,0 +1,5 @@
+C:\Algorithms\algorithms\Benchmark\obj\Debug\net6.0\Benchmark.csproj.AssemblyReference.cache
+C:\Algorithms\algorithms\Benchmark\obj\Debug\net6.0\Benchmark.GeneratedMSBuildEditorConfig.editorconfig
+C:\Algorithms\algorithms\Benchmark\obj\Debug\net6.0\Benchmark.AssemblyInfoInputs.cache
+C:\Algorithms\algorithms\Benchmark\obj\Debug\net6.0\Benchmark.AssemblyInfo.cs
+C:\Algorithms\algorithms\Benchmark\obj\Debug\net6.0\Benchmark.csproj.CoreCompileInputs.cache
