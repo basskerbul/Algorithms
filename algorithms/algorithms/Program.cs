@@ -5,7 +5,7 @@
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
-BenchmarkSwitcher.FromAssembly(typeof(BenchmarkSwitcher).Assembly).Run(args);
+BenchmarkSwitcher.FromAssembly(typeof(BenchmarkClass).Assembly).Run(args);
 
 
 [MemoryDiagnoser]
