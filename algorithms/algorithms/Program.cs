@@ -16,13 +16,36 @@ string StringGenerator()
     return str;
 }
 
+//Генерация массива и таблицы
 string[] array_strings = new string[10000];
-for(int i = 0; i < array_strings.Length; i++)
+var hachset = new HashSet<string>();
+
+for (int i = 0; i < array_strings.Length; i++)
 {
     array_strings[i] = StringGenerator();
+    hachset.Add(StringGenerator());
 }
-Console.WriteLine(array_strings[45]);
-Console.WriteLine(array_strings[12]);
-Console.WriteLine("");
-Console.WriteLine("");
-Console.WriteLine("");
+
+bool TryArraySearch(string[] array, string value)
+{
+    for (int i = 0; i < array.Length; i++)
+    {
+        if (array[i] == value)
+        {
+            Console.WriteLine($"Значение {value} найдено по индексу {array[i]}");
+            return true;
+        }
+    }
+    return false;
+}
+
+bool TryHashsetSearsh(HashSet<string>? table, string value)
+{
+    if (table.Contains(value))
+    {
+        Console.WriteLine($"Значение {value} найдено");
+        return true;
+    }
+    else
+        return false;
+}
