@@ -3,251 +3,230 @@
 //быть сбалансированным (это требование не обязательно). Также напишите метод вывода в консоль
 //дерева, чтобы увидеть, насколько корректно работает ваша реализация.
 
-var head = new TreeNode { Value = 10 };
-//Добавленые элементы невозможно сохранить, потому что существуют они только
-//в пределах метода, который их создает. И когда метод завершается т.к.
-//из метода void к переменной вне это не присвоить, то элемент стирается
-head.AddItem(2);
-head.AddItem(18);
-head.PrintTree();
+var head = new Node { Data = 10 };
+var item1 = head.Insert(15);
+var item2 = head.Insert(8);
+PrintTree.Print(head);
 
-
-public class TreeNode: ITree
+public interface ITreeFunctions
 {
-    public int Value { get; set; }
-    public TreeNode LeftChild { get; set; }
-    public TreeNode RightChild { get; set; }
+    public Node Search(Node head, int value);
+    public void Delete(int value);
+    public Node? Insert(int value);
+}
 
-    public override bool Equals(object obj)
+public static class PrintTree
+{
+    public static void Print(Node head)
     {
-        var node = obj as TreeNode;
-        if (node == null)
-            return false;
-        return node.Value == Value;
-    }
-    public override int GetHashCode()
-    {
-        return base.GetHashCode();
-    }
-
-    /// <summary>
-    /// Возвращает корень?
-    /// </summary>
-    /// <returns></returns>
-    public TreeNode GetRoot()
-    {
-        TreeNode head = new() { Value = this.Value };
-        head.LeftChild = this.LeftChild;
-        head.RightChild = this.RightChild;
-
-
-
-        return null;
-    }
-    public void AddItem(int value)
-    {
-        TreeNode new_item = new TreeNode { Value = value };
-        new_item.LeftChild = null;
-        new_item.RightChild = null;
-        TreeNode head = new TreeNode { Value = this.Value };
-        head.LeftChild = this.LeftChild;
-        head.RightChild = this.RightChild;
-
-        while (true)
-        {
-            if (head.Value > new_item.Value)
-            {
-                if(head.LeftChild != null)
-                {
-                    head = head.LeftChild;     //если левый лист не равен нулю
-                    continue;               //то присвоить head будет левый лист
-                }
-                else if(head.LeftChild == null)
-                {
-                    head.LeftChild = new_item;
-                    break;
-                }
-            }
-            else if(head.Value < new_item.Value)
-            {
-                if(head.RightChild != null)
-                {
-                    head = head.RightChild;
-                    continue;
-                }
-                else if(head.RightChild == null)
-                {
-                    head.RightChild = new_item;
-                }
-            }
-        }
-    }
-    public void RemoveItem(int value)
-    {
-        TreeNode head = new() { Value = this.Value };
-        head.LeftChild = this.LeftChild;
-        head.RightChild = this.RightChild;
-
-        TreeNode item = new() { Value = value };
-
-        while (true)
-        {
-            if (head.Value < value)
-            {
-                item = head.RightChild;
-                if (item.Value == value)
-                {
-                    if (head.RightChild != null)
-                        head.RightChild = head.RightChild.RightChild;
-                    else
-                        head.RightChild = null;
-                    break;
-                }
-            }
-            else if(head.Value > value)
-            {
-                item = head.LeftChild;
-                if(item.Value == value)
-                {
-                    if (head.LeftChild != null)
-                        head.LeftChild = head.LeftChild.LeftChild;
-                    else
-                        head.LeftChild = null;
-                    break;
-                }
-            }
-        }
-    }
-    public TreeNode GetNodeByValue(int value)
-    {
-        TreeNode head = new() { Value = this.Value };
-        head.RightChild = this.RightChild;
-        head.LeftChild = this.LeftChild;
-
-        TreeNode item = Search(head, value);
-
-        return item;
-    }
-    public void PrintTree()
-    {
-        TreeNode head = new() { Value = this.Value };
-        head.LeftChild = this.LeftChild;
-        head.RightChild = this.RightChild;
         string format = "";
         string result = "";
 
-        Console.Write($"__({head.Value})__");
-        
-        Queue<TreeNode> queue1 = new();
+        Console.Write($"__({head.Data})__");
+
+        Queue<Node> queue1 = new();
         queue1.Enqueue(head);
-        Queue<TreeNode> queue2 = new();
+        Queue<Node> queue2 = new();
         while (true)
         {
             if (queue1.Count == 0 & queue2.Count == 0)
                 break;
-            if(queue2.Count == 0)
+            if (queue2.Count == 0)
             {
                 result += "\n";
-                TreeNode item = queue1.Dequeue();
-                queue2.Enqueue(item.LeftChild);
-                queue2.Enqueue(item.RightChild);
-                result += $"({item.Value})";
+                Node item = queue1.Dequeue();
+                queue2.Enqueue(item.Left);
+                queue2.Enqueue(item.Right);
+                result += $"({item.Data})";
             }
-            else if(queue1.Count == 0)
+            else if (queue1.Count == 0)
             {
                 result += "\n";
-                TreeNode item = queue2.Dequeue();
-                queue1.Enqueue(item.LeftChild);
-                queue1.Enqueue(item.RightChild);
-                result += $"{item.Value}";
+                Node item = queue2.Dequeue();
+                queue1.Enqueue(item.Left);
+                queue1.Enqueue(item.Right);
+                result += $"{item.Data}";
             }
         }
         Console.WriteLine(result);
     }
+}
+
+public class Node: ITreeFunctions
+{
+    public int Data { get; set; }
+    public Node Left { get; set; }
+    public Node Right { get; set; }
     /// <summary>
-    /// Поиск
+    /// Поиск по значению
     /// </summary>
-    /// <param name="head"></param>
-    /// <param name="value"></param>
-    /// <returns></returns>
-    public static TreeNode Search(TreeNode head, int value)
+    /// <param name="node"></param>
+    public Node Search(Node head, int value)
     {
-        TreeNode result = head;
-        while (result.Value == value)
+        Node result = head;
+        while (result.Data == value)
         {
-            if (result.LeftChild.Value < value)
+            if (result.Left.Data < value)
             {
-                result = result.LeftChild;
+                result = result.Left;
                 continue;
             }
-            else if (result.LeftChild.Value > value)
+            else if (result.Left.Data > value)
             {
-                result = result.RightChild;
+                result = result.Right;
                 continue;
             }
-            else if (result.RightChild.Value < value)
+            else if (result.Right.Data < value)
             {
-                result = result.LeftChild;
+                result = result.Left;
                 continue;
             }
-            else if (result.RightChild.Value > value)
+            else if (result.Right.Data > value)
             {
-                result = result.RightChild;
+                result = result.Right;
                 continue;
             }
         }
         return result;
     }
-}
-public interface ITree
-{
-    TreeNode GetRoot();
-    void AddItem(int value); // добавить узел
-    void RemoveItem(int value); // удалить узел по значению
-    TreeNode GetNodeByValue(int value); //получить узел дерева по значению
-    void PrintTree(); //вывести дерево в консоль
-}
-
-/// <summary>
-/// помощник
-/// </summary>
-public static class TreeHelper
-{
-    public static NodeInfo[] GetTreeInLine(ITree tree)
+    /// <summary>
+    /// Удаление
+    /// </summary>
+    /// <param name="node"></param>
+    public void Delete(int value)
     {
-        var bufer = new Queue<NodeInfo>();
-        var returnArray = new List<NodeInfo>();
-        var root = new NodeInfo() { Node = tree.GetRoot() };
-        bufer.Enqueue(root);
-        while (bufer.Count != 0)
+        Node head = new() { Data = this.Data };
+        head.Left = this.Left;
+        head.Right = this.Right;
+
+        Node item = new() { Data = value };
+
+        while (true)
         {
-            var element = bufer.Dequeue();
-            returnArray.Add(element);
-            var depth = element.Depth + 1;
-            if (element.Node.LeftChild != null)
+            if (head.Data < value)
             {
-                var left = new NodeInfo()
+                item = head.Right;
+                if (item.Data == value)
                 {
-                    Node = element.Node.LeftChild,
-                    Depth = depth,
-                };
-                bufer.Enqueue(left);
+                    if (head.Right != null)
+                        head.Right = head.Right.Right;
+                    else
+                        head.Right = null;
+                    break;
+                }
             }
-            if (element.Node.RightChild != null)
+            else if (head.Data > value)
             {
-                var right = new NodeInfo()
+                item = head.Left;
+                if (item.Data == value)
                 {
-                    Node = element.Node.RightChild,
-                    Depth = depth,
-                };
-                bufer.Enqueue(right);
+                    if (head.Left != null)
+                        head.Left = head.Left.Left;
+                    else
+                        head.Left = null;
+                    break;
+                }
             }
         }
-        return returnArray.ToArray();
     }
-}
-public class NodeInfo
-{
-    public int Depth { get; set; } //глубина
-    public TreeNode Node { get; set; }
+    /// <summary>
+    /// Вставка
+    /// </summary>
+    /// <param name="head"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public Node? Insert(int value)
+    {
+        Node head = new() { Data = this.Data };
+        head.Left = this.Left;
+        head.Right = this.Right;
+
+        if (head == null)
+        {
+            head.Data = value;
+            head.Left = null;
+            head.Right = null;
+            return head;
+        }
+        Node unit = head;
+        while (unit != null)
+        {
+            if (unit.Data > value)
+            {
+                if (unit.Left != null)
+                {
+                    unit = unit.Left;
+                    continue;
+                }
+                else
+                {
+                    Node new_unit = new Node { Data = value };
+                    new_unit.Left = null;
+                    new_unit.Right = null;
+                    return new_unit;
+                }
+            }
+            else if (unit.Data < value)
+            {
+                if (unit.Right != null)
+                {
+                    unit = unit.Right;
+                    continue;
+                }
+                else
+                {
+                    Node new_unit = new Node { Data = value };
+                    new_unit.Right = null;
+                    new_unit.Left = null;
+                    return new_unit;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Что-то пошло не так");
+                return null;
+            }
+        }
+        return unit;
+    }
+    /// <summary>
+    /// Вывод на консоль
+    /// </summary>
+    /// <param name="head"></param>
+    public void OutputToConsole()
+    {
+        Node head = new() { Data = this.Data };
+        head.Left = this.Left;
+        head.Right = this.Right;
+        string format = "";
+        string result = "";
+
+        Console.Write($"__({head.Data})__");
+
+        Queue<Node> queue1 = new();
+        queue1.Enqueue(head);
+        Queue<Node> queue2 = new();
+        while (true)
+        {
+            if (queue1.Count == 0 & queue2.Count == 0)
+                break;
+            if (queue2.Count == 0)
+            {
+                result += "\n";
+                Node item = queue1.Dequeue();
+                queue2.Enqueue(item.Left);
+                queue2.Enqueue(item.Right);
+                result += $"({item.Data})";
+            }
+            else if (queue1.Count == 0)
+            {
+                result += "\n";
+                Node item = queue2.Dequeue();
+                queue1.Enqueue(item.Left);
+                queue1.Enqueue(item.Right);
+                result += $"{item.Data}";
+            }
+        }
+        Console.WriteLine(result);
+    }
 }
