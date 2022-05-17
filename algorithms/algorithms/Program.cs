@@ -88,65 +88,52 @@ public static class BinaryTree
     }
     public static void Print(TreeNode head)
     {
-        string interval = "  /    \\";
+        //Короче, с помощью поиска в ширину пройтись по всему дереву и создать массив
+        //со всеми нодами а потом распределить все по уровням
+        Queue<TreeNode> queue = new();
+        queue.Enqueue(head);
+        TreeNode[] items = { head };
+        int count = 1;
+        string level = "";
 
-        Console.WriteLine($"   __({head.Value})__");
-        Console.WriteLine(interval);
-
-        Queue<TreeNode> queue1 = new();
-        Queue<TreeNode> queue2 = new();
-
-        queue1.Enqueue(head);
-
-        while(true)
+        while (true)
         {
-            if(queue1.Count == 0 & queue2.Count == 0)
+            if (queue.Count == 0)
                 break;
-            string level = "";
-            if (queue1.Count != 0)
+            TreeNode item = queue.Dequeue();
+            if (item.Left != null)
             {
-                for (int x = 0; x <= queue1.Count; x++)
-                {
-                    TreeNode item = queue1.Dequeue();
-                    if (item.Left != null)
-                    {
-                        queue2.Enqueue(item.Left);
-                        level = $"({item.Left.Value})" + level;
-                    }
-                    else
-                        level = "(null)" + level;
-                    if (item.Right != null)
-                    {
-                        queue2.Enqueue(item.Right);
-                        level = level + $"({item.Right.Value})";
-                    }
-                    else
-                        level = level + "(null)";
-                }
+                queue.Enqueue(item.Left);
+                items = GetArray(items, item.Left);
             }
-            if(queue2.Count != 0)
+            else
+                items = GetArray(items, null);
+            if (item.Right != null)
             {
-                for (int x = 0; x <= queue2.Count; x++)
-                {
-                    TreeNode item = queue2.Dequeue();
-                    if (item.Left != null)
-                    {
-                        queue1.Enqueue(item.Left);
-                        level = $"({item.Left.Value})" + level;
-                    }
-                    else
-                        level = "(null)" + level;
-                    if (item.Right != null)
-                    {
-                        queue1.Enqueue(item.Right);
-                        level = level + $"({item.Right.Value})";
-                    }
-                    else
-                        level = level + "(null)";
-                    
-                }
+                queue.Enqueue(item.Right);
+                items = GetArray(items, item.Right);
             }
-            Console.WriteLine(level);
+            else
+                items = GetArray(items, item.Right);
+        }
+        while(items.Length != 0)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                
+            }
+            count *= 2;
         }
     }
+    private static TreeNode[] GetArray(TreeNode[] nodes, TreeNode? node)
+    {
+        TreeNode[] new_array = new TreeNode[nodes.Length];
+        new_array[new_array.Length - 1] = node;
+        for(int i = 0; i < nodes.Length; i++)
+        {
+            new_array[i] = nodes[i];
+        }
+        return new_array;
+    }
+
 }
