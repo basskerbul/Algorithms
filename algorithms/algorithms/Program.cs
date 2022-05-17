@@ -6,6 +6,7 @@ using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
 
 BenchmarkSwitcher.FromAssembly(typeof(BenchmarkClass).Assembly).Run(args);
+Console.ReadKey();
 
 
 [MemoryDiagnoser]
@@ -18,25 +19,25 @@ public class BenchmarkClass
     PointStruct pointStruct2 = new PointStruct(32, 4);
 
     [Benchmark]
-    void Test1()
+    public void Test1()
     {
         DistanceCalculation.DistancePointClassFloat(pointClass1, pointClass2);
     }
 
     [Benchmark]
-    void Test2()
+    public void Test2()
     {
         DistanceCalculation.DistancePointStructFloat(pointStruct1, pointStruct2);
     }
 
     [Benchmark]
-    void Test3()
+    public void Test3()
     {
         DistanceCalculation.DistancePointStructDouble(pointStruct1, pointStruct2);
     }
 
     [Benchmark]
-    void Test4()
+    public void Test4()
     {
         DistanceCalculation.DistancePointStructFloatWithoutSquareRoot(pointStruct1, pointStruct2);
     }

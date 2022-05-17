@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>BenchmarkClass-20220517-210743</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.1, OS=Windows 10.0.19044.1706 (21H2)
+Intel Core i7-3537U CPU 2.00GHz (Ivy Bridge), 1 CPU, 4 logical and 2 physical cores
+.NET SDK=6.0.200
+  [Host]     : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT  [AttachedDebugger]
+  DefaultJob : .NET 6.0.2 (6.0.222.6406), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th><th>Rank</th><th>Allocated</th>
+</tr>
+</thead><tbody><tr><td>Test1</td><td>4.6546 ns</td><td>0.1295 ns</td><td>0.1211 ns</td><td>4.6499 ns</td><td>3</td><td>-</td>
+</tr><tr><td>Test2</td><td>4.9956 ns</td><td>0.0848 ns</td><td>0.0751 ns</td><td>4.9791 ns</td><td>4</td><td>-</td>
+</tr><tr><td>Test3</td><td>0.0024 ns</td><td>0.0083 ns</td><td>0.0069 ns</td><td>0.0000 ns</td><td>1</td><td>-</td>
+</tr><tr><td>Test4</td><td>3.6501 ns</td><td>0.0796 ns</td><td>0.0706 ns</td><td>3.6352 ns</td><td>2</td><td>-</td>
+</tr></tbody></table>
+</body>
+</html>
