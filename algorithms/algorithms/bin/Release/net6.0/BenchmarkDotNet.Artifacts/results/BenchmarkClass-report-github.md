@@ -10,7 +10,7 @@ Intel Core i7-3537U CPU 2.00GHz (Ivy Bridge), 1 CPU, 4 logical and 2 physical co
 ```
 | Method |      Mean |     Error |    StdDev |    Median | Rank | Allocated |
 |------- |----------:|----------:|----------:|----------:|-----:|----------:|
-|  Test1 | 4.6546 ns | 0.1295 ns | 0.1211 ns | 4.6499 ns |    3 |         - |
-|  Test2 | 4.9956 ns | 0.0848 ns | 0.0751 ns | 4.9791 ns |    4 |         - |
-|  Test3 | 0.0024 ns | 0.0083 ns | 0.0069 ns | 0.0000 ns |    1 |         - |
-|  Test4 | 3.6501 ns | 0.0796 ns | 0.0706 ns | 3.6352 ns |    2 |         - |
+|  Test1 | 4.1063 ns | 0.0729 ns | 0.0609 ns | 4.0923 ns |    3 |         - |
+|  Test2 | 4.7248 ns | 0.0938 ns | 0.0831 ns | 4.7160 ns |    4 |         - |
+|  Test3 | 0.0023 ns | 0.0078 ns | 0.0065 ns | 0.0000 ns |    1 |         - |
+|  Test4 | 3.5685 ns | 0.0947 ns | 0.0839 ns | 3.5598 ns |    2 |         - |
