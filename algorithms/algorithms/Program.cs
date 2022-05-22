@@ -91,10 +91,12 @@ public static class BinaryTree
         //Короче, с помощью поиска в ширину пройтись по всему дереву и создать массив
         //со всеми нодами а потом распределить все по уровням
         Queue<TreeNode> queue = new();
+        Queue<TreeNode>? items = new();
         queue.Enqueue(head);
-        TreeNode[] items = { head };
+        items.Enqueue(head);
         int count = 1;
-        string level = "";
+        int level = 0;
+        string floor = "";
 
         while (true)
         {
@@ -104,36 +106,46 @@ public static class BinaryTree
             if (item.Left != null)
             {
                 queue.Enqueue(item.Left);
-                items = GetArray(items, item.Left);
+                items.Enqueue(item.Left);
             }
             else
-                items = GetArray(items, null);
+                items.Enqueue(null);
             if (item.Right != null)
             {
                 queue.Enqueue(item.Right);
-                items = GetArray(items, item.Right);
+                items.Enqueue(item.Right);
             }
             else
-                items = GetArray(items, item.Right);
+                items.Enqueue(item.Right);
         }
-        while(items.Length != 0)
+
+        TreeNode[] allItems = TakeQueueReturnArray(queue);
+        while(allItems.Length == 0)
         {
-            for (int i = 0; i < count; i++)
+            for(int i = level; i < count; i++)
             {
-                
+                if (allItems[i] == null)
+                    floor += "(null)";
+                else
+                    floor += $"{allItems[i]}";
             }
+            if(level == 0)
+                level = 1;
             count *= 2;
+            Console.WriteLine(floor);
         }
     }
-    private static TreeNode[] GetArray(TreeNode[] nodes, TreeNode? node)
+    private static TreeNode[] TakeQueueReturnArray(Queue<TreeNode> queue)
     {
-        TreeNode[] new_array = new TreeNode[nodes.Length];
-        new_array[new_array.Length - 1] = node;
-        for(int i = 0; i < nodes.Length; i++)
+        int leng = queue.Count - 1;
+        TreeNode[] array = new TreeNode[leng];
+
+        for(int i = 0; i < queue.Count; i++)
         {
-            new_array[i] = nodes[i];
+            array[i] = queue.Dequeue();
         }
-        return new_array;
+
+        return array;
     }
 
 }
