@@ -3,49 +3,80 @@
 //сгенерировать. Потом выполните замер производительности проверки наличия строки в массиве и
 //HashSet. Выложите код и результат замеров.
 
-string StringGenerator()
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+
+BenchmarkSwitcher.FromAssembly(typeof(BenchmarkClass).Assembly).Run(args);
+Console.ReadKey();
+
+public class ArraySetGenerator
 {
-    Random random = new Random();
-    string letters = "abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
-    string str = "";
-    for (int i = 0; i <= 10; i++)
+    public string[] array_strings;
+    public HashSet<string> hashset;
+
+    public ArraySetGenerator(int arrayLength)
     {
-        int index = random.Next(letters.Length);
-        str += letters[index];
-    }
-    return str;
-}
-
-//Генерация массива и таблицы
-string[] array_strings = new string[10000];
-var hachset = new HashSet<string>();
-
-for (int i = 0; i < array_strings.Length; i++)
-{
-    array_strings[i] = StringGenerator();
-    hachset.Add(StringGenerator());
-}
-
-bool TryArraySearch(string[] array, string value)
-{
-    for (int i = 0; i < array.Length; i++)
-    {
-        if (array[i] == value)
+        string[] arr = new string[arrayLength];
+        HashSet<string> set = new();
+        for (int i = 0; i < arrayLength; i++)
         {
-            Console.WriteLine($"Значение {value} найдено по индексу {array[i]}");
-            return true;
+            arr[i] = StringGenerator();
+            set.Add(StringGenerator());
+        }
+        array_strings = arr;
+        hashset = set;
+    }
+
+    public static string StringGenerator()
+    {
+        Random random = new Random();
+        string letters = "abcdefghijklmnopqrstuvwxyzабвгдеёжзийклмнопрстуфхцчшщъыьэюя";
+        string str = "";
+        for (int i = 0; i <= 10; i++)
+        {
+            int index = random.Next(letters.Length);
+            str += letters[index];
+        }
+        return str;
+    }
+}
+
+public static class TrySearch
+{
+    public static void TryArraySearch(string[] array, string value)
+    {
+        for (int i = 0; i < array.Length; i++)
+        {
+            if (array[i] == value)
+            {
+                Console.WriteLine($"Значение {value} найдено по индексу {array[i]}");
+            }
         }
     }
-    return false;
+
+    public static void TryHashsetSearsh(HashSet<string>? table, string value)
+    {
+        if (table.Contains(value))
+        {
+            Console.WriteLine($"Значение {value} найдено");
+        }
+    }
 }
 
-bool TryHashsetSearsh(HashSet<string>? table, string value)
+[MemoryDiagnoser]
+[RankColumn]
+public class BenchmarkClass
 {
-    if (table.Contains(value))
+    ArraySetGenerator set = new ArraySetGenerator(10000);
+
+    [Benchmark]
+    public void TestArraySearch()
     {
-        Console.WriteLine($"Значение {value} найдено");
-        return true;
+        TrySearch.TryArraySearch(set.array_strings, set.array_strings[500]);
     }
-    else
-        return false;
+    [Benchmark]
+    public void TestHashsetSearch()
+    {
+        TrySearch.TryHashsetSearsh(set.hashset, ArraySetGenerator.StringGenerator());
+    }
 }
