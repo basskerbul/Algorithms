@@ -11,6 +11,9 @@ BinaryTree.Insert(head, 6);
 BinaryTree.Insert(head, 10);
 BinaryTree.Insert(head, 9);
 BinaryTree.Insert(head, 11);
+BinaryTree.Insert(head, 22);
+
+BinaryTree.Delete(head, 22);
 
 BinaryTree.Print(head);
 
@@ -94,9 +97,6 @@ public static class BinaryTree
         Queue<TreeNode>? items = new();
         queue.Enqueue(head);
         items.Enqueue(head);
-        int count = 1;
-        int level = 0;
-        string floor = "";
 
         while (true)
         {
@@ -119,30 +119,33 @@ public static class BinaryTree
                 items.Enqueue(item.Right);
         }
 
-        TreeNode[] allItems = TakeQueueReturnArray(queue);
-        while(allItems.Length == 0)
+        int[] allItems = TakeQueueReturnArray(items);
+        int level = 0;
+        int level_size = 1;
+        while(true)
         {
-            for(int i = level; i < count; i++)
+            string str = "";
+            for(int i = level * level_size; i < level * level_size + level_size; i++)
             {
-                if (allItems[i] == null)
-                    floor += "(null)";
-                else
-                    floor += $"{allItems[i]}";
+                str += $"({allItems[i]})";
             }
-            if(level == 0)
-                level = 1;
-            count *= 2;
-            Console.WriteLine(floor);
+            level++;
+            level_size *= 2;
+            Console.WriteLine(str);
         }
     }
-    private static TreeNode[] TakeQueueReturnArray(Queue<TreeNode> queue)
+    private static int[] TakeQueueReturnArray(Queue<TreeNode> queue)
     {
         int leng = queue.Count - 1;
-        TreeNode[] array = new TreeNode[leng];
+        int[] array = new int[leng];
 
         for(int i = 0; i < queue.Count; i++)
         {
-            array[i] = queue.Dequeue();
+            TreeNode item = queue.Dequeue();
+            if (item == null)
+                array[i] = 0;
+            else
+                array[i] = item.Value;
         }
 
         return array;
