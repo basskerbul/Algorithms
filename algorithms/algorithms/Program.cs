@@ -120,18 +120,27 @@ public static class BinaryTree
         }
 
         int[] allItems = TakeQueueReturnArray(items);
-        int level = 0;
-        int level_size = 1;
-        while(true)
+
+        int degree = 1;
+        int min = 0;
+        int max = 1;
+        int Tab = 3;
+        while (degree <= 3)
         {
             string str = "";
-            for(int i = level * level_size; i < level * level_size + level_size; i++)
+            for (int i = min; i < max; i++)
             {
-                str += $"({allItems[i]})";
+                str += $"┌({allItems[i]})┐";
             }
-            level++;
-            level_size *= 2;
+            //Красота в глазах смотрящего.............................
+            int centerX = (Console.WindowWidth / 2) - (str.Length / 2);
+            Console.SetCursorPosition(centerX, degree);
             Console.WriteLine(str);
+
+            min = max;
+            max += Convert.ToInt32(Math.Pow(2, degree));
+            degree++;
+            Tab--;
         }
     }
     private static int[] TakeQueueReturnArray(Queue<TreeNode> queue)
