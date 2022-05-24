@@ -91,8 +91,6 @@ public static class BinaryTree
     }
     public static void Print(TreeNode head)
     {
-        //Короче, с помощью поиска в ширину пройтись по всему дереву и создать массив
-        //со всеми нодами а потом распределить все по уровням
         Queue<TreeNode> queue = new();
         Queue<TreeNode>? items = new();
         queue.Enqueue(head);
@@ -124,7 +122,6 @@ public static class BinaryTree
         int degree = 1;
         int min = 0;
         int max = 1;
-        int Tab = 3;
         while (degree <= 3)
         {
             string str = "";
@@ -140,7 +137,6 @@ public static class BinaryTree
             min = max;
             max += Convert.ToInt32(Math.Pow(2, degree));
             degree++;
-            Tab--;
         }
     }
     private static int[] TakeQueueReturnArray(Queue<TreeNode> queue)
