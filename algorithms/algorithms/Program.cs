@@ -43,7 +43,8 @@ public static class Helper
 
         int[] last_line= new int[field.Length];
         
-        for (int i = 0; i < last_line.Length; i++)            last_line[i] = field[field.Length - 1][i];
+        for (int i = 0; i < last_line.Length; i++)
+            last_line[i] = field[field.Length - 1][i];
         
         return last_line[last_line.Length - 1];
     }
