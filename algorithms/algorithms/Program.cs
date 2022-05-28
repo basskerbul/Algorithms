@@ -1,8 +1,14 @@
 ﻿// Реализовать Bucketsort, проверить корректность работы.
 
 int[] values1 = {15, 8, 88, 97, 4, 25, 76, 34, 21};
+EditingArray.Print(values1);
 values1 = Sort.Busket(values1);
-Console.ReadKey();
+EditingArray.Print(values1);
+
+int[] values2 = { 34, 7, 89, 54, 11, 23, 4, 45, 77, 68 };
+EditingArray.Print(values2);
+values2 = Sort.Busket(values2);
+EditingArray.Print(values2);
 
 public static class Sort
 {
@@ -104,5 +110,13 @@ public static class EditingArray
         for (int i = 0; i < array2.Length; i++)
             new_array[i + array1.Length] = array2[i];
         return new_array;
+    }
+    public static void Print(int[] array)
+    {
+        foreach (int item in array)
+        {
+            Console.Write($"{item}, ");
+        }
+        Console.WriteLine();
     }
 }
