@@ -1,7 +1,8 @@
 ﻿// Реализовать Bucketsort, проверить корректность работы.
 
 int[] values1 = {15, 8, 88, 97, 4, 25, 76, 34, 21};
-values1 = Sort.Busket(values1); 
+values1 = Sort.Busket(values1);
+Console.ReadKey();
 
 public static class Sort
 {
@@ -28,15 +29,20 @@ public static class Sort
         //сортировать блоки
         for(int i = 0; i < buskets.Length; i++)
             buskets[i] = Sort.Quick(buskets[i]);
-        
+
         //собрать блоки в один массив
-        return values;
+        int[] sorted_array = { };
+        for(int i = 0; i < buskets.Length; i++)
+            sorted_array = EditingArray.Gluing(sorted_array, buskets[i]);
+        
+        return sorted_array;
     }
+
     private static int[] Quick(int[] array)
     {
         if (array == null)
             return null;
-        if (array[0] == null)
+        if (array.Length == 0)
             return null;
         if (array.Length == 1)
             return array;
@@ -49,21 +55,21 @@ public static class Sort
             if(array[i] < array[support_element])
                 less = EditingArray.Insert(less, array[i]);
             
-            else if(array[i] >= array[support_element])
+            else if(array[i] > array[support_element])
                 more = EditingArray.Insert(more, array[i]);
         }
-        
         less = Sort.Quick(less);
         more = Sort.Quick(more);
         int[] sorted_array = { };
-        sorted_array = EditingArray.Gluing(less, more);
+        sorted_array = EditingArray.Insert(less, array[support_element]);
+        sorted_array = EditingArray.Gluing(sorted_array, more);
         return sorted_array;
     }
 }
 public static class EditingArray
 {
     /// <summary>
-    /// Добавляет элементы в конец
+    /// Добавляет элемент в конец
     /// </summary>
     /// <param name="array"></param>
     /// <param name="value"></param>
@@ -80,24 +86,23 @@ public static class EditingArray
             return new_array;
         }
     } 
+    /// <summary>
+    /// Склеивает два массива
+    /// </summary>
+    /// <param name="array1"></param>
+    /// <param name="array2"></param>
+    /// <returns></returns>
     public static int[] Gluing(int[] array1, int[] array2)
     {
+        if (array1 == null)
+            return array2;
+        if (array2 == null)
+            return array1;
         int[] new_array = new int[array1.Length + array2.Length];
         for (int i = 0; i < array1.Length; i++)
             new_array[i] = array1[i];
         for (int i = 0; i < array2.Length; i++)
             new_array[i + array1.Length] = array2[i];
         return new_array;
-    }
-    /// <summary>
-    /// Удаляет первый элемент
-    /// </summary>
-    /// <param name="array"></param>
-    public static void Delete(ref int[] array)
-    {
-        int[] new_array = new int[array.Length];
-        for (int i = 0; i < new_array.Length; i++)
-            new_array[i] = array[i++];
-        array = new_array;
     }
 }
