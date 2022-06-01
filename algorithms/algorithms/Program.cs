@@ -1,11 +1,11 @@
 ﻿// Реализовать Bucketsort, проверить корректность работы.
 
-int[] values1 = {15, 8, 88, 97, 4, 25, 76, 34, 21};
+int[] values1 = {15, 8, 88, 97, 4, 25, 76, 34, 21, 4, 8, 25};
 EditingArray.Print(values1);
 values1 = Sort.Busket(values1);
 EditingArray.Print(values1);
 
-int[] values2 = { 34, 7, 89, 54, 11, 23, 4, 45, 77, 68 };
+int[] values2 = {34, 7, 89, 54, 11, 23,  4, 45, 77, 68, 7, 11};
 EditingArray.Print(values2);
 values2 = Sort.Busket(values2);
 EditingArray.Print(values2);
@@ -15,12 +15,12 @@ public static class Sort
     public static int[] Busket(int[] values)
     {
         //создание контейнеров
-        int[][] buskets = new int[5][];         // 0-19 20-39 40-59 60-79 80-99+
+        int[][] buskets = new int[5][];         // 0-19 20-39 40-59 60-79 80-99
         
         //раскидать элементы по блокам
         for(int i = 0; i < values.Length; i++)
         {
-            if (values[i] >= 0 & values[i] < 20)
+            if (values[i] > 0 & values[i] < 20)
                 buskets[0] = EditingArray.Insert(buskets[0], values[i]);
             else if (values[i] >= 20 & values[i] < 40)
                 buskets[1] = EditingArray.Insert(buskets[1], values[i]);
@@ -55,6 +55,7 @@ public static class Sort
         Random rnd = new();
         int support_element = rnd.Next(0, array.Length - 1);
         int[] less = { };
+        int[] equal = { };
         int[] more = { };
         for(int i = 0; i < array.Length; i++)
         {
@@ -63,11 +64,13 @@ public static class Sort
             
             else if(array[i] > array[support_element])
                 more = EditingArray.Insert(more, array[i]);
+            else
+                equal = EditingArray.Insert(equal, array[i]);
         }
         less = Sort.Quick(less);
         more = Sort.Quick(more);
         int[] sorted_array = { };
-        sorted_array = EditingArray.Insert(less, array[support_element]);
+        sorted_array = EditingArray.Gluing(less, equal);
         sorted_array = EditingArray.Gluing(sorted_array, more);
         return sorted_array;
     }
